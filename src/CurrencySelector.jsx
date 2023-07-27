@@ -1,9 +1,17 @@
+import { useEffect, useState } from "react"
+
 const CurrencySelector = ({ currency, setCurrency }) => {
+  const [currencies, setCurrencies] = useState([])
+
+  useEffect(() => {
+    fetch('https://justcors.com/tl_763c4ef/https://api.coindesk.com/v1/bpi/supported-currencies.json')
+      .then(res => res.json())
+      .then(data => setCurrencies(data))
+  }, [])
+
   return (
     <select onChange={evt => setCurrency(evt.target.value)} value={currency}>
-      <option value="AUD">Australian Dollar</option>
-      <option value="USD">US Dollar</option>
-      <option value="EUR">Euro</option>
+      {currencies.map(cur => <option value={cur.currency}>{cur.country}</option>)}
     </select>
   )
 }
